@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Widget</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        #weather-widget {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="weather-widget">
+        <h2 id="location">Loading location...</h2>
+        <p id="temperature"></p>
+        <p id="description"></p>
+    </div>
+    <script>
+        navigator.geolocation.getCurrentPosition((position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const apiKey = "459d6d7e3b24434b14d494c7d2a9c60d";
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("location").innerText = `Location: ${data.name}`;
+                    document.getElementById("temperature").innerText = `Temperature: ${data.main.temp}°C`;
+                    document.getElementById("description").innerText = `Condition: ${data.weather[0].description}`;
+                });
+        });
+    </script>
+</body>
+</html>
